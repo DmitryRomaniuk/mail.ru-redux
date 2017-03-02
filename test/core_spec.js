@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { Map, List } from 'immutable';
+import {expect} from 'chai';
+import {Map, List} from 'immutable';
 
-import { setEntries, next, vote } from '../src/core';
+import {setEntries, next, vote} from '../src/core';
 
 describe('application logic', () => {
 
@@ -14,7 +14,7 @@ describe('application logic', () => {
             expect(nextState).to.equal(Map({
                 entries: List.of('Trainspotting', '28 Days Later')
             }));
-        })
+        });
 
         it('преобразует в immutable', () => {
             const state = Map();
@@ -25,7 +25,7 @@ describe('application logic', () => {
             }));
         });
 
-    })
+    });
 
     describe('next', () => {
 
@@ -36,12 +36,12 @@ describe('application logic', () => {
             const nextState = next(state);
             expect(nextState).to.be.equal(
                 Map({
-                    vote: Map({ pair: List.of('Trainspotting', '28 Days Later') }),
+                    vote: Map({pair: List.of('Trainspotting', '28 Days Later')}),
                     entries: List.of('Sunshine')
                 })
             )
         })
-    })
+    });
 
     describe('vote', () => {
 
@@ -49,14 +49,14 @@ describe('application logic', () => {
             const state = Map({
                 pair: List.of('Trainspotting', '28 Days Later')
             });
-            const nextState = vote(state, 'Trainspotting')
+            const nextState = vote(state, 'Trainspotting');
             expect(nextState).to.equal(Map({
                 pair: List.of('Trainspotting', '28 Days Later'),
                 tally: Map({
                     'Trainspotting': 1
                 })
             }));
-        })
+        });
 
         it('added value to entries', () => {
             const state = Map({
@@ -75,7 +75,25 @@ describe('application logic', () => {
                 })
             }));
         });
-    })
+
+        it('if tally not correct', () => {
+            const state = Map({
+                pair: List.of('Trainspotting', '28 Days Later'),
+                tally: Map({
+                    'Trainspotting': 3,
+                    '28 Days Later': 2
+                })
+            });
+            const nextState = vote(state, 'Sunshine');
+            expect(nextState).to.equal(Map({
+                pair: List.of('Trainspotting', '28 Days Later'),
+                tally: Map({
+                    'Trainspotting': 3,
+                    '28 Days Later': 2
+                })
+            }));
+        });
+    });
 
     describe('next', () => {
 
@@ -98,7 +116,7 @@ describe('application logic', () => {
                 }),
                 entries: List.of('127 Hours', 'Trainspotting')
             }));
-        })
+        });
 
         it('if we have one entries, then it is winner', () => {
             const state = Map({
@@ -117,4 +135,4 @@ describe('application logic', () => {
             }))
         })
     })
-})
+});
